@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/utils/ui";
-import { Icons } from "@/components/icons"
+import { Icons } from "@/components/icons";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -51,7 +51,7 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
-]
+];
 
 export function NavigationMenuDemo() {
   return (
@@ -65,10 +65,10 @@ export function NavigationMenuDemo() {
                 <NavigationMenuLink asChild>
                   <a
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-rose-500 to-indigo-700 p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
+                    href="#"
                   >
                     <Icons.logo className="h-6 w-6 text-white" />
-                    <div className="mt-4 mb-2 text-lg font-medium text-white">
+                    <div className="mb-2 mt-4 text-lg font-medium text-white">
                       shadcn/ui
                     </div>
                     <p className="text-sm leading-tight text-white/90">
@@ -115,7 +115,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 const ListItem = React.forwardRef<
@@ -140,6 +140,6 @@ const ListItem = React.forwardRef<
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";

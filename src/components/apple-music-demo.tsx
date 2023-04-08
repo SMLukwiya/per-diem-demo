@@ -1,7 +1,7 @@
-import * as React from "react"
-import Image from "next/image"
+import * as React from "react";
+import Image from "next/image";
 import {
-  Album,
+  type Album,
   CreditCard,
   Globe,
   Keyboard,
@@ -24,12 +24,12 @@ import {
   User,
   UserPlus,
   Users,
-} from "lucide-react"
+} from "lucide-react";
 
-import { cn } from "@/utils/ui"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/utils/ui";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -39,7 +39,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu"
+} from "@/components/ui/context-menu";
 import {
   Dialog,
   DialogContent,
@@ -48,7 +48,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,9 +62,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -80,10 +80,10 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@/components/ui/menubar"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@/components/ui/menubar";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const playlists = [
   "Recently Added",
@@ -98,12 +98,12 @@ const playlists = [
   "Runtober",
   "Mellow Days",
   "Eminem Essentials",
-]
+];
 
 interface Album {
-  name: string
-  artist: string
-  cover: string
+  name: string;
+  artist: string;
+  cover: string;
 }
 
 const listenNowAlbums: Album[] = [
@@ -131,7 +131,7 @@ const listenNowAlbums: Album[] = [
     cover:
       "https://images.unsplash.com/photo-1598295893369-1918ffaf89a2?w=300&dpr=2&q=80",
   },
-]
+];
 
 const madeForYouAlbums: Album[] = [
   {
@@ -176,7 +176,7 @@ const madeForYouAlbums: Album[] = [
     cover:
       "https://images.unsplash.com/photo-1598295893369-1918ffaf89a2?w=300&dpr=2&q=80",
   },
-]
+];
 
 export function AppleMusicDemo() {
   return (
@@ -434,8 +434,9 @@ export function AppleMusicDemo() {
                   </h2>
                   <ScrollArea className="h-[230px] px-4">
                     <div className="space-y-1 p-2">
-                      {playlists.map((playlist) => (
+                      {playlists.map((playlist, index) => (
                         <Button
+                          key={`playlist-${index}`}
                           variant="ghost"
                           size="sm"
                           className="w-full justify-start font-normal"
@@ -562,7 +563,7 @@ export function AppleMusicDemo() {
                     </div>
                     <Separator className="my-4" />
                     <div className="relative">
-                      <DemoIndicator className="right-auto left-24 top-32 z-30" />
+                      <DemoIndicator className="left-24 right-auto top-32 z-30" />
                       <div className="relative flex space-x-4">
                         {listenNowAlbums.map((album) => (
                           <AlbumArtwork
@@ -583,7 +584,7 @@ export function AppleMusicDemo() {
                     </div>
                     <Separator className="my-4" />
                     <div className="relative">
-                      <DemoIndicator className="top-32 right-auto left-16 z-30" />
+                      <DemoIndicator className="left-16 right-auto top-32 z-30" />
                       <ScrollArea>
                         <div className="flex space-x-4 pb-4">
                           {madeForYouAlbums.map((album) => (
@@ -620,7 +621,7 @@ export function AppleMusicDemo() {
                         <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-slate-50">
                           No episodes added
                         </h3>
-                        <p className="mt-2 mb-4 text-sm text-slate-500 dark:text-slate-400">
+                        <p className="mb-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
                           You have not added any podcasts. Add one below.
                         </p>
                         <Dialog>
@@ -628,7 +629,7 @@ export function AppleMusicDemo() {
                             <Button size="sm" className="relative">
                               <Plus className="mr-2 h-4 w-4" />
                               Add Podcast
-                              <DemoIndicator className="-top-1 -right-1 z-30" />
+                              <DemoIndicator className="-right-1 -top-1 z-30" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent>
@@ -662,12 +663,12 @@ export function AppleMusicDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-  album: Album
-  aspectRatio?: number
+  album: Album;
+  aspectRatio?: number;
 }
 
 function AlbumArtwork({
@@ -725,21 +726,21 @@ function AlbumArtwork({
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-interface DemoIndicatorProps extends React.HTMLAttributes<HTMLSpanElement> {}
+type DemoIndicatorProps = React.HTMLAttributes<HTMLSpanElement>;
 
 export function DemoIndicator({ className }: DemoIndicatorProps) {
   return (
     <span
       className={cn(
-        "absolute top-1 right-0 flex h-5 w-5 animate-bounce items-center justify-center",
+        "absolute right-0 top-1 flex h-5 w-5 animate-bounce items-center justify-center",
         className
       )}
     >
       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75" />
       <span className="relative inline-flex h-3 w-3 rounded-full bg-sky-500" />
     </span>
-  )
+  );
 }
