@@ -4,10 +4,10 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
+import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
-
-import CredentialsProvider from "next-auth/providers/credentials"
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -37,54 +37,22 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.userId as string;
-        // session.user.role = user.role; <-- put other properties on the session here
-      }
-      return session;
-    },
-    jwt({ user, token }) {
-      if (user) token.userId = user.id;
-      return token;
-    },
+    session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+      },
+    }),
   },
-  pages: {
-    signIn: "/login",
-  },
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+  theme: {
+    colorScheme: "dark",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "test@example.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email) return null;
-
-        const email = credentials.email.toLowerCase();
-        const user = await prisma.user.findUnique({ where: { email } });
-
-        if (user) return user;
-
-        const newUser = prisma.user.create({
-          data: {
-            email,
-            image: `https://avatars.dicebear.com/api/avataaars/${email}.svg`,
-          },
-        });
-
-        return newUser;
-      },
+    DiscordProvider({
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
     /**
      * ...add more providers here.
