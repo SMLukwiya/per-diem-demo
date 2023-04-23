@@ -21,11 +21,14 @@ const Home: NextPage = () => {
               <Link href="/" className="flex cursor-pointer items-center">
                 <div className="flex cursor-pointer items-center gap-2 text-white">
                   <Image src="/logo.svg" alt="luno" width={22} height={22} />
-                  <div className="font-bold">luno</div>
+                  <div className="font-bold">Per Diem</div>
                 </div>
               </Link>
             </div>
             <div className="flex gap-2">
+              <Link href="/">
+                <Button variant="subtle">Start Trial</Button>
+              </Link>
               <Link href={signinUrl}>
                 <Button variant="ghost">Login</Button>
               </Link>
@@ -35,31 +38,15 @@ const Home: NextPage = () => {
             </div>
           </div>
         </nav>
-        <main className="flex items-center justify-center px-4 text-center sm:px-8 ">
-          <div className="mt-20 flex max-w-[980px] flex-col items-center justify-center gap-2 text-center">
-            <h1 className="text-3xl font-extrabold leading-tight tracking-tighter text-white md:text-5xl lg:text-6xl lg:leading-[1.1]">
-              A better way to [placeholder]
-            </h1>
-            <p className="max-w-[640px] text-lg text-slate-700 dark:text-slate-400 sm:text-xl">
-              Luno is ultimate tool for building minimum viable products at
-              lightning speed.
-            </p>
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <Link href={signinUrl}>
-                <Button size="lg">Get started</Button>
-              </Link>
-            </div>
-          </div>
+        <main className="flex flex-col items-center justify-center px-4 text-center sm:px-8 ">
+          <h1 className="text-7xl font-bold text-white">
+            Look Ma, No Commission
+          </h1>
+          <p className="w-7/12 text-3xl text-white">
+            Some apps charge up to a 30% commission for online orders. When you
+            have your own app you can pay 0%. That’s right. Zero. Nada. Zilch.
+          </p>
         </main>
-        <div className="m-auto max-w-5xl px-12 pt-12 2xl:max-w-7xl">
-          <Image
-            src="/screenshot-app.png"
-            alt="luno Tech"
-            width={2310}
-            height={1118}
-            className="rounded-t-3xl border border-slate-700 shadow-2xl shadow-slate-600 2xl:rounded-3xl"
-          />
-        </div>
       </div>
     </>
   );

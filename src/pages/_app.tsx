@@ -1,4 +1,4 @@
-import { Inter as FontSans } from "next/font/google"
+import { Inter as FontSans } from "next/font/google";
 
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
@@ -12,7 +12,7 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-})
+});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -24,7 +24,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
         className={cn(
           "min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50",
           fontSans.variable
-        )}>
+        )}
+      >
         <SessionProvider session={session}>
           <Component {...pageProps} />
         </SessionProvider>
