@@ -2,21 +2,17 @@ import { z } from "zod";
 
 export const menuItemRequestSchema = z.object({
   title: z.string(),
-  description: z.string(),
   price: z.string(),
-  menuId: z.string(),
 });
 
 export const menuRequestSchema = z.object({
   title: z.string(),
-  description: z.string(),
-  restaurantId: z.string(),
+  items: z.array(menuItemRequestSchema),
 });
 
 export const menuSchema = z.object({
   id: z.string(),
   title: z.string(),
-  description: z.string(),
   restaurantId: z.string(),
   createdAt: z.date().or(z.string()),
 });
@@ -37,3 +33,4 @@ export const serverFileSchema = z.object({
 export type ServerFile = z.TypeOf<typeof serverFileSchema>;
 export type MenuItemRequest = z.TypeOf<typeof menuItemRequestSchema>;
 export type MenuRequest = z.TypeOf<typeof menuRequestSchema>;
+export type Menu = z.TypeOf<typeof menuSchema>;

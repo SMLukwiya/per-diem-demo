@@ -38,50 +38,60 @@ const Home: NextPage = () => {
         <AuthShowcase sessionData={sessionData} />
       </nav>
       <main className="justify-centerbg-gradient-to-b flex min-h-screen flex-col items-center">
-        <div>
-          <p className="text-4xl font-bold">{restaurant?.title}</p>
-          <p className="text-2xl font-semibold">{restaurant?.description}</p>
-          <p>Other details</p>
-          <Link href="/app/menu">
-            <div className="rounded-full bg-white/10 px-10 py-2 text-center">
-              Create Menu
+        {restaurant ? (
+          <div>
+            <p className="text-2xl font-bold">My Store</p>
+            <p className="text-4xl font-bold">{restaurant?.title}</p>
+            <p className="text-2xl font-semibold">{restaurant?.description}</p>
+            <p>Other details</p>
+            <Link
+              href={{
+                pathname: "/app/menu",
+                query: { restaurantId: restaurant.id },
+              }}
+            >
+              <div className="rounded-full bg-white/10 px-10 py-2 text-center">
+                Create Menu
+              </div>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div>
+              <p>Create your shop and start earning</p>
+              <div className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition">
+                Create shop
+              </div>
             </div>
-          </Link>
-        </div>
-        <form className="w-1/2" onSubmit={handleSubmit}>
-          <div>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="shop name"
-              className="my-2 w-full p-2 text-black outline-none"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="shop description"
-              className="my-2 w-full p-2 text-black outline-none"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isCreating}
-            className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-          >
-            Create
-          </button>
-        </form>
-        {!restaurant && (
-          <div>
-            <p>Create your shop and start earning</p>
-            <div className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition">
-              Create shop
-            </div>
-          </div>
+
+            <form className="w-1/2" onSubmit={handleSubmit}>
+              <div>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="shop name"
+                  className="my-2 w-full p-2 text-black outline-none"
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="shop description"
+                  className="my-2 w-full p-2 text-black outline-none"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isCreating}
+                className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+              >
+                Create
+              </button>
+            </form>
+          </>
         )}
       </main>
     </>
@@ -91,7 +101,7 @@ const Home: NextPage = () => {
 export default Home;
 
 function useGetAllUserRestaurants(userId?: string | "") {
-  return api.restaurant.getById.useQuery({
+  return api.restaurant.show.useQuery({
     userId: userId || "",
   });
 }
@@ -100,8 +110,8 @@ function useCreateRestaurant(userId?: string) {
   const utils = api.useContext();
 
   return api.restaurant.create.useMutation({
-    onSuccess: async (response) => {
-      await utils.restaurant.getById.invalidate({ userId: userId || "" });
+    onSuccess: async () => {
+      await utils.restaurant.show.invalidate({ userId: userId || "" });
     },
   });
 }

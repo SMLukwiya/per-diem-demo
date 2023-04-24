@@ -1,11 +1,42 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import AuthShowcase from "@/components/showAuthCase";
+import { type ChangeEvent, useState } from "react";
+import axios from "axios";
+import { api } from "@/utils/api";
+import { useMutation } from "@tanstack/react-query";
+import { restaurantDefaultSchema } from "@/api-contract/restautant.schema";
+import { useRouter } from "next/router";
 
 export default function MenuPage() {
+  const { query } = useRouter();
+  const restaurantId = query.restaurantId as string;
+  const [file, setFile] = useState<File>();
   const { data: sessionData } = useSession();
+  const { data: menu } = useGetRestaurantMenu(restaurantId);
+  const createMenu = useCreateMenu();
   if (!sessionData || !sessionData.user) return <h1>Loading...</h1>;
+
+  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const onHandleUpload = () => {
+    if (file) {
+      createMenu.mutate(
+        { file, restaurantId },
+        {
+          onSuccess: () => {
+            setFile(undefined);
+          },
+        }
+      );
+    }
+  };
+
+  console.log("Menu=======", menu);
 
   return (
     <>
@@ -17,7 +48,59 @@ export default function MenuPage() {
       <nav>
         <AuthShowcase sessionData={sessionData} />
       </nav>
-      <main className="justify-centerbg-gradient-to-b flex min-h-screen flex-col items-center"></main>
+      <main className="justify-centerbg-gradient-to-b flex min-h-screen flex-col items-center">
+        <div className="flex flex-col items-center">
+          <p className="my-3 text-xl">
+            Do not stress, Just Upload your pdf menu. We shall do the rest.
+          </p>
+          <label
+            htmlFor="file"
+            className="cursor-pointer rounded-full bg-white/10 px-5 py-3"
+          >
+            Upload
+          </label>
+          {file && <p className="ml-2 mt-2 text-sm">{file.name}</p>}
+          <input
+            id="file"
+            type="file"
+            accept="application/pdf"
+            onChange={onFileChange}
+            className="hidden"
+          />
+
+          <button
+            className="mt-10 block rounded-full bg-white/10 px-10 py-3"
+            onClick={() => void onHandleUpload()}
+          >
+            {createMenu.isLoading ? <p>Loading....</p> : <p>Save</p>}
+          </button>
+        </div>
+      </main>
     </>
   );
+}
+
+function useGetRestaurantMenu(restaurantId: string) {
+  return api.menu.list.useQuery({ id: restaurantId });
+}
+
+function useCreateMenu() {
+  const utils = api.useContext();
+
+  const createMenu = async (data: { file: File; restaurantId: string }) => {
+    const formdata = new FormData();
+    formdata.append("file", data.file);
+    formdata.append("restaurantId", data.restaurantId);
+    const response = await axios.post("/api/file-upload/create", formdata, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return restaurantDefaultSchema.parse(response.data);
+  };
+
+  return useMutation(createMenu, {
+    onSuccess: async (response) => {
+      await utils.menu.list.invalidate();
+    },
+  });
 }

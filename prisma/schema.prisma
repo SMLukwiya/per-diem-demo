@@ -68,16 +68,15 @@ model Restaurant {
   description String
   user User @relation(fields: [userId], references: [id])
   userId String @unique
-  menu Menu?
+  menu Menu[]
   createdAt DateTime @default(now())
 }
 
 model Menu {
   id String @id @default(cuid())
   title String
-  description String
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId String @unique
+  restaurantId String
   items MenuItem[]
   createdAt DateTime @default(now())
 }
@@ -85,7 +84,6 @@ model Menu {
 model MenuItem {
   id String @id @default(cuid())
   title String
-  description String
   price String
   menu Menu @relation(fields: [menuId], references: [id])
   menuId String

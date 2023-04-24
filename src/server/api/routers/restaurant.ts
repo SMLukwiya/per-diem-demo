@@ -24,7 +24,7 @@ export const restaurantRouter = createTRPCRouter({
 
       return response;
     }),
-  getById: protectedProcedure
+  show: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .output(restaurantSchema)
     .query(async ({ input, ctx }) => {
