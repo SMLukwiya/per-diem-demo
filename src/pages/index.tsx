@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { type NextPage } from "next";
+import { type CtxOrReq } from "next-auth/client/_utils";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,5 +53,16 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: CtxOrReq) {
+  const { req } = context;
+  const session = await getSession({ req });
+
+  if (session) {
+    return {
+      redirect: { destination: "/app" },
+    };
+  }
+}
 
 export default Home;
