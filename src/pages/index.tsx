@@ -45,9 +45,11 @@ const Home: NextPage = () => {
             Some apps charge up to a 30% commission for online orders. When you
             have your own app you can pay 0%. That’s right. Zero. Nada. Zilch.
           </H3>
-          <Button className="rounded-full bg-white/10 px-10 text-center font-semibold text-white no-underline transition hover:bg-white/20">
-            <H4>Start Trial</H4>
-          </Button>
+          <Link href={signinUrl}>
+            <Button className="rounded-full bg-white/10 px-10 text-center font-semibold text-white no-underline transition hover:bg-white/20">
+              <H4>Start Trial</H4>
+            </Button>
+          </Link>
         </main>
       </div>
     </>

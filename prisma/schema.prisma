@@ -10,12 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -66,7 +60,7 @@ model Restaurant {
   id String @id @default(cuid())
   title String
   description String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
   menu Menu[]
   createdAt DateTime @default(now())
@@ -75,7 +69,7 @@ model Restaurant {
 model Menu {
   id String @id @default(cuid())
   title String
-  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String
   items MenuItem[]
   createdAt DateTime @default(now())
@@ -85,7 +79,7 @@ model MenuItem {
   id String @id @default(cuid())
   title String
   price String
-  menu Menu @relation(fields: [menuId], references: [id])
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
   menuId String
   createdAt DateTime @default(now())
 }

@@ -7,7 +7,7 @@ import { api } from "@/utils/api";
 import { useMutation } from "@tanstack/react-query";
 import { restaurantDefaultSchema } from "@/api-contract/restautant.schema";
 import { useRouter } from "next/router";
-import { type Menu } from "@/api-contract/menu.schema";
+import { type MenuResponse } from "@/api-contract/menu.schema";
 import { H4, P } from "@/components/ui/typography";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -78,6 +78,9 @@ export default function MenuPage() {
             {createMenu.isLoading ? <P>Loading....</P> : <P>Save</P>}
           </Button>
         </div>
+        <div className="mt-10">
+          <H4>Menus</H4>
+        </div>
         {menus && (
           <div className="w-1/2">
             {menus.map((menu) => (
@@ -109,13 +112,13 @@ function useCreateMenu() {
   };
 
   return useMutation(createMenu, {
-    onSuccess: async () => {
-      await utils.menu.list.invalidate();
+    onSuccess: async (response) => {
+      await utils.menu.list.invalidate({ id: response.id });
     },
   });
 }
 
-function MenuComponent({ menu }: { menu: Menu }) {
+function MenuComponent({ menu }: { menu: MenuResponse }) {
   return (
     <div className="w-full">
       <H4>{menu.title}</H4>

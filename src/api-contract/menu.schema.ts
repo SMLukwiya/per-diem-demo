@@ -40,4 +40,4 @@ export const serverFileSchema = z.object({
 export type ServerFile = z.TypeOf<typeof serverFileSchema>;
 export type MenuItemRequest = z.TypeOf<typeof menuItemRequestSchema>;
 export type MenuRequest = z.TypeOf<typeof menuRequestSchema>;
-export type Menu = z.TypeOf<typeof menuSchema>;
+export type MenuResponse = z.TypeOf<typeof menuSchema>;

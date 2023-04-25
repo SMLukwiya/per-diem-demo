@@ -7,7 +7,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test": "npm run test:db:reset && node node_modules/.bin/jest --runInBand",
+    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
@@ -47,6 +49,7 @@
   "devDependencies": {
     "@types/eslint": "^8.21.3",
     "@types/formidable": "^2.0.5",
+    "@types/jest": "^29.5.1",
     "@types/node": "^18.15.5",
     "@types/pdf-parse": "^1.1.1",
     "@types/prettier": "^2.7.2",
@@ -55,8 +58,10 @@
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "autoprefixer": "^10.4.14",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^8.36.0",
     "eslint-config-next": "^13.2.4",
+    "jest": "^29.5.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.6",
     "prettier-plugin-tailwindcss": "^0.2.6",

@@ -5,7 +5,7 @@ import { type MenuRequest, type ServerFile } from "@/api-contract/menu.schema";
 import pdfParse from "pdf-parse";
 import { readFileSync } from "fs";
 import { Configuration, OpenAIApi } from "openai";
-import { prisma } from "@/server/db";
+import { MenuEntity } from "@/business-logic/menu";
 
 const configuration = new Configuration({
   organization: "org-jGwCTgBd7LlDlhS1hi6UwrDD",
@@ -32,6 +32,7 @@ export default async function handler(
   }
 
   try {
+    const entity = new MenuEntity();
     const { files, fields } = await parseRequest(req);
     const data = files as unknown as ServerFile;
     const restaurantId = fields.restaurantId as string;
@@ -52,9 +53,7 @@ export default async function handler(
     if (!menus)
       return res.status(400).json("Sorry, could not complete request");
 
-    const response = await saveToDB(menus, restaurantId);
-
-    console.log(response);
+    await entity.create(menus, restaurantId);
 
     return res.status(201).json({ restaurantId });
   } catch (error) {
@@ -95,40 +94,21 @@ interface ParsedData {
 function transformData(data?: string) {
   if (!data) return;
   const menus: MenuRequest[] = [];
-  const parsedResponse = JSON.parse(data) as ParsedData;
-  for (const menu in parsedResponse) {
-    const menuItems = [];
-    for (const item in parsedResponse[menu]) {
-      menuItems.push({
-        title: item,
-        price: parsedResponse[menu]?.[item] || "",
-      });
+
+  try {
+    const parsedResponse = JSON.parse(data) as ParsedData;
+    for (const menu in parsedResponse) {
+      const menuItems = [];
+      for (const item in parsedResponse[menu]) {
+        menuItems.push({
+          title: item,
+          price: parsedResponse[menu]?.[item] || "",
+        });
+      }
+      menus.push({ title: menu, items: menuItems });
     }
-    menus.push({ title: menu, items: menuItems });
+    return menus;
+  } catch (e) {
+    return false;
   }
-  return menus;
-}
-
-async function saveToDB(menus: MenuRequest[], restaurantId: string) {
-  const menuPromise = menus.map((menu) => {
-    return prisma.menu.create({
-      data: {
-        title: menu.title,
-        restaurant: {
-          connect: { id: restaurantId },
-        },
-        items: {
-          createMany: {
-            data: menu.items.map((item) => ({
-              title: item.title,
-              price: `${item.price}`,
-            })),
-          },
-        },
-      },
-    });
-  });
-
-  const response = await Promise.all(menuPromise);
-  return response;
 }

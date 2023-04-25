@@ -2,41 +2,29 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { menuSchema } from "@/api-contract/menu.schema";
+import { MenuEntity } from "@/business-logic/menu";
 
 export const menuRouter = createTRPCRouter({
   show: protectedProcedure
-    .input(z.object({ restaurantId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .output(z.nullable(menuSchema))
-    .query(async ({ input, ctx }) => {
-      const menu = await ctx.prisma.menu.findUnique({
-        where: { id: input.restaurantId },
-        include: { items: true },
-      });
+    .query(async ({ input }) => {
+      const entity = new MenuEntity();
 
-      return menu;
+      return await entity.show(input.id);
     }),
   list: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.menu.findMany({
-        where: {
-          restaurantId: input.id,
-        },
-        include: { items: true },
-      });
+    .query(async ({ input }) => {
+      const entity = new MenuEntity();
 
-      return response;
+      return await entity.list(input.id);
     }),
   delete: protectedProcedure
     .input(z.object({ id: z.string(), restaurantId: z.string() }))
-    .mutation(async ({ input, ctx }) => {
-      const { id, restaurantId } = input;
-      const menu = await ctx.prisma.menu.findUnique({ where: { id: id } });
+    .mutation(async ({ input }) => {
+      const entity = new MenuEntity();
 
-      if (menu?.restaurantId !== restaurantId) {
-        throw new Error("Forbidden");
-      }
-
-      return await ctx.prisma.menu.delete({ where: { id } });
+      return await entity.delete(input.id, input.restaurantId);
     }),
 });

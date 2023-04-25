@@ -29,7 +29,8 @@ const Home: NextPage = () => {
 
   function handleSubmit(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutate({ title, description, userId: sessionData?.user.id || "" });
+    const data = { title, description };
+    mutate({ data, userId: sessionData?.user.id || "" });
   }
 
   return (
@@ -78,10 +79,11 @@ const Home: NextPage = () => {
               </div>
               <div>
                 <Textarea
+                  rows={10}
                   placeholder="Enter you restaurant description."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="my-2 w-full p-2 text-black outline-none"
+                  className="my-2 w-full p-2 text-white outline-none"
                 />
               </div>
               <Button

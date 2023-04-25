@@ -2,63 +2,33 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
-  restaurantListSchema,
   restaurantRequestSchema,
   restaurantSchema,
 } from "@/api-contract/restautant.schema";
+import { RestaurantEntity } from "@/business-logic/restaurant";
 
 export const restaurantRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(restaurantRequestSchema)
-    .mutation(async ({ input, ctx }) => {
-      const { title, description, userId } = input;
-      const response = await ctx.prisma.restaurant.create({
-        data: {
-          title,
-          description,
-          user: {
-            connect: { id: userId },
-          },
-        },
-      });
+    .input(z.object({ data: restaurantRequestSchema, userId: z.string() }))
+    .mutation(async ({ input }) => {
+      const entity = new RestaurantEntity();
 
-      return response;
+      return await entity.create(input.data, input.userId);
     }),
   show: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .output(restaurantSchema)
-    .query(async ({ input, ctx }) => {
-      const restaurant = await ctx.prisma.restaurant.findUnique({
-        where: { userId: input.userId },
-        include: { menu: true },
-      });
+    .query(async ({ input }) => {
+      const entity = new RestaurantEntity();
 
-      return restaurant;
-    }),
-  list: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .output(restaurantListSchema)
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.restaurant.findMany({
-        where: {
-          userId: input.userId,
-        },
-      });
-
-      return response;
+      return await entity.show(input.userId);
     }),
   delete: protectedProcedure
     .input(z.object({ id: z.string(), userId: z.string() }))
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const { userId, id } = input;
-      const restaurant = await ctx.prisma.restaurant.findUnique({
-        where: { id: userId },
-      });
+      const entity = new RestaurantEntity();
 
-      if (restaurant?.userId !== userId) {
-        throw new Error("Forbidden");
-      }
-
-      return await ctx.prisma.restaurant.delete({ where: { id: id } });
+      return await entity.delete(id, userId);
     }),
 });

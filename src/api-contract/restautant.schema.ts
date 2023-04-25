@@ -7,7 +7,6 @@ export const restaurantDefaultSchema = z.object({
 export const restaurantRequestSchema = z.object({
   title: z.string(),
   description: z.string(),
-  userId: z.string(),
 });
 
 export const restaurantSchema = z
@@ -23,3 +22,4 @@ export const restaurantSchema = z
 export const restaurantListSchema = z.array(restaurantSchema);
 
 export type RestaurantRequest = z.TypeOf<typeof restaurantRequestSchema>;
+export type RestaurantResponse = z.TypeOf<typeof restaurantSchema>;
