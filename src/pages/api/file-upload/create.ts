@@ -50,12 +50,14 @@ export default async function handler(
 
     const menus = transformData(JSONResult.data.choices[0]?.text);
 
+    console.log(menus);
+
     if (!menus)
       return res.status(400).json("Sorry, could not complete request");
 
     await entity.create(menus, restaurantId);
 
-    return res.status(201).json({ restaurantId });
+    return res.status(201).json({ id: restaurantId });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json(error.message);
