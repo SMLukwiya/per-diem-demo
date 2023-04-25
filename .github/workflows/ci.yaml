@@ -20,6 +20,9 @@ jobs:
 
     env:
       DATABASE_URL: postgres://postgres:password@localhost:5400/DB_CI
+      NEXTAUTH_URL: ${{secrets.NEXTAUTH_URL}}
+      DISCORD_CLIENT_ID: ${{secrets.DISCORD_CLIENT_ID}}
+      DISCORD_CLIENT_SECRET: ${{secrets.DISCORD_CLIENT_SECRET}}
 
     strategy:
       matrix:
