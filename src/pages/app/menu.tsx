@@ -129,7 +129,7 @@ function MenuComponent({ menu }: { menu: MenuResponse }) {
             key={item.id}
           >
             <P>{item.title}</P>
-            <P>${item.price}</P>
+            <P>{item.price}</P>
           </div>
         ))}
       </div>

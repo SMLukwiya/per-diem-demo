@@ -37,6 +37,18 @@ export const serverFileSchema = z.object({
   }),
 });
 
+export const JSONSchema = {
+  restaurant_name: "string",
+  properties: {
+    menu_title: [
+      {
+        title: "string",
+        price: "string",
+      },
+    ],
+  },
+};
+
 export type ServerFile = z.TypeOf<typeof serverFileSchema>;
 export type MenuItemRequest = z.TypeOf<typeof menuItemRequestSchema>;
 export type MenuRequest = z.TypeOf<typeof menuRequestSchema>;

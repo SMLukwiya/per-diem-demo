@@ -1,7 +1,12 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import formidable from "formidable";
 import { getSession } from "next-auth/react";
-import { type MenuRequest, type ServerFile } from "@/api-contract/menu.schema";
+import {
+  JSONSchema,
+  type MenuItemRequest,
+  type MenuRequest,
+  type ServerFile,
+} from "@/api-contract/menu.schema";
 import pdfParse from "pdf-parse";
 import { readFileSync } from "fs";
 import { Configuration, OpenAIApi } from "openai";
@@ -39,7 +44,9 @@ export default async function handler(
     const buffer = readFileSync(data.file.filepath);
     const fileData2 = await pdfParse(buffer);
     const textData = `${fileData2.text.substring(0, 4000)}`;
-    const prompt = `${textData}. Can you please return a JSON representation of the provided data?.`;
+    const prompt = `${textData}. Can you please return a JSON representation of the provided data? Use this JSON schema as the structure ${JSON.stringify(
+      JSONSchema
+    )}`;
     const JSONResult = await openai.createCompletion({
       model: "text-davinci-003",
       prompt,
@@ -50,14 +57,12 @@ export default async function handler(
 
     const menus = transformData(JSONResult.data.choices[0]?.text);
 
-    console.log(menus);
-
     if (!menus)
       return res.status(400).json("Sorry, could not complete request");
 
     await entity.create(menus, restaurantId);
 
-    return res.status(201).json({ id: restaurantId });
+    return res.status(201).json({ id: "restaurantId" });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json(error.message);
@@ -88,8 +93,9 @@ function parseRequest(
 }
 
 interface ParsedData {
-  [title: string]: {
-    [item: string]: string;
+  restaurant_name: string;
+  properties: {
+    [menu_title: string]: { title: string; price: string }[];
   };
 }
 
@@ -99,15 +105,9 @@ function transformData(data?: string) {
 
   try {
     const parsedResponse = JSON.parse(data) as ParsedData;
-    for (const menu in parsedResponse) {
-      const menuItems = [];
-      for (const item in parsedResponse[menu]) {
-        menuItems.push({
-          title: item,
-          price: parsedResponse[menu]?.[item] || "",
-        });
-      }
-      menus.push({ title: menu, items: menuItems });
+    const properties = parsedResponse.properties;
+    for (const menu in properties) {
+      menus.push({ title: menu, items: properties[menu] as MenuItemRequest[] });
     }
     return menus;
   } catch (e) {
