@@ -1,28 +1,40 @@
-# Create T3 App
+# PDF Reader with AI-powered Text Extraction
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/yourusername/yourprojectname/blob/master/LICENSE)
 
-## What's next? How do I make an app with this?
+Welcome to this simple PDF Reader Demo, a simple Next.js project that leverages artificial intelligence (AI) to extract text from PDF files and store it into a database. This could be a perfect fit for Per Diem, a user can simply upload their menu and the AI does the text extraction tasks in a seamless, efficient, by utilizing machine learning algorithms. This can be a nice value addition.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Features
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- **AI-powered Text Extraction**: This project uses GPT-3 language processing (NLP) techniques to extract text from PDF files with high accuracy and reliability. It can handle a wide range of PDF formats and layouts, making it suitable for various use cases.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **Easy-to-Use**: The project is implemented in Next.js and Open AI and provides a simple and intuitive interface that allows a user to upload a pdf menu,and the text is extracted within seconds.
 
-## Learn More
+- **Database Integration**: This PDF Reader saves the extracted data directly into prisma using a defined schema, it therefore can integrate with databases such as MySQL, PostgreSQL, SQLite, and MongoDB.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Installation
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+To try out the project, Open a terminal and run the following command:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```sh
+git clone git@github.com:SMLukwiya/per-diem-demo.git
+cd per-diem-demo
+docker-compose up -d
+npm install
+```
 
-## How do I deploy this?
+> Look at the .env.example for the required env variables to be able to run the project locally.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Usage
+
+Simply run the application on localhost and the flow will be very intuitive.
+
+You can customize the text extraction process by specifying parameters such as the language model, confidence threshold, and ROIs. Please refer to the [documentation](https://github.com/yourusername/yourprojectname/blob/master/docs/user_guide.md) for more information.
+
+### License
+
+PDF Reader Demo is open-source software released under the [MIT License](https://github.com/yourusername/yourprojectname/blob/master/LICENSE).
+
+### Contact
+
+If you have any questions or feedback, please feel free to contact us at [sundaymorganl@gmail.com](mailto: sundaymorganl@gmail.com)
