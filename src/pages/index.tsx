@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { H1, H3 } from "@/components/ui/typography";
+import { H1, H3, H4 } from "@/components/ui/typography";
 import { Menubar } from "@radix-ui/react-menubar";
 import { type NextPage } from "next";
 import { type CtxOrReq } from "next-auth/client/_utils";
@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>luno</title>
+        <title>Per diem</title>
         <meta name="description" content="luno" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -31,9 +31,6 @@ const Home: NextPage = () => {
             </div>
             <div className="flex gap-2">
               <Link href={signinUrl}>
-                <Button variant="subtle">Start Trial</Button>
-              </Link>
-              <Link href={signinUrl}>
                 <Button variant="ghost">Login</Button>
               </Link>
               <Link href={signinUrl}>
@@ -42,12 +39,15 @@ const Home: NextPage = () => {
             </div>
           </div>
         </Menubar>
-        <main className="flex flex-col items-center justify-center px-4 text-center sm:px-8 ">
+        <main className="mx-auto flex w-2/3 flex-col items-center justify-center gap-4 px-4 text-center sm:px-8">
           <H1>Look Ma, No Commission</H1>
           <H3>
             Some apps charge up to a 30% commission for online orders. When you
             have your own app you can pay 0%. That’s right. Zero. Nada. Zilch.
           </H3>
+          <Button className="rounded-full bg-white/10 px-10 text-center font-semibold text-white no-underline transition hover:bg-white/20">
+            <H4>Start Trial</H4>
+          </Button>
         </main>
       </div>
     </>
