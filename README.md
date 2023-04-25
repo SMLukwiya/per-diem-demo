@@ -29,7 +29,7 @@ npm install
 
 Simply run the application on localhost and the flow will be very intuitive.
 
-You can customize the text extraction process by specifying parameters such as the language model, confidence threshold, and ROIs. Please refer to the [documentation](https://github.com/yourusername/yourprojectname/blob/master/docs/user_guide.md) for more information.
+You can customize the text extraction process by specifying parameters such as the language model, confidence threshold, and other parameters. Please refer to the [documentation](https://platform.openai.com/docs/guides/completion/best-practices) for more information.
 
 ### License
 
