@@ -1,6 +1,8 @@
 import { type Session } from "next-auth/core/types";
-import Image from "next/image";
 import { signIn, signOut } from "next-auth/react";
+import { P } from "@/components/ui/typography";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 export default function AuthShowcase({
   sessionData,
@@ -11,21 +13,26 @@ export default function AuthShowcase({
     <div className="flex items-center justify-between gap-4 border-b border-b-slate-400 px-4 py-2">
       <div className="flex items-center gap-4">
         <div className="relative h-12 w-12 rounded-full">
-          <Image
-            src={sessionData?.user.image || ""}
-            className="h-12 w-12 rounded-full"
-            alt="profile pic"
-            fill
-          />
+          <Avatar>
+            <AvatarImage
+              src={sessionData?.user.image || ""}
+              className="h-12 w-12 rounded-full"
+              alt="profile pic"
+            />
+          </Avatar>
         </div>
-        <p>{sessionData?.user.name}</p>
+        <P>{sessionData?.user.name}</P>
       </div>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
+      <Button
+        className="rounded-full bg-white/10 px-10 font-semibold text-white no-underline transition hover:bg-white/20"
+        onClick={
+          sessionData
+            ? () => void signOut({ callbackUrl: "/" })
+            : () => void signIn()
+        }
       >
         {sessionData ? "Sign out" : "Sign in"}
-      </button>
+      </Button>
     </div>
   );
 }

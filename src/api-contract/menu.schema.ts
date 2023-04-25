@@ -5,6 +5,12 @@ export const menuItemRequestSchema = z.object({
   price: z.string(),
 });
 
+export const menuItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  price: z.string(),
+});
+
 export const menuRequestSchema = z.object({
   title: z.string(),
   items: z.array(menuItemRequestSchema),
@@ -14,6 +20,7 @@ export const menuSchema = z.object({
   id: z.string(),
   title: z.string(),
   restaurantId: z.string(),
+  items: z.array(menuItemSchema),
   createdAt: z.date().or(z.string()),
 });
 
