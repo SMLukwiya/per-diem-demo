@@ -37,4 +37,4 @@ PDF Reader Demo is open-source software released under the [MIT License](https:/
 
 ### Contact
 
-If you have any questions or feedback, please feel free to contact us at [sundaymorganl@gmail.com](mailto: sundaymorganl@gmail.com)
+If you have any questions or feedback, please feel free to contact us at (mailto: sundaymorganl@gmail.com)
