@@ -21,7 +21,6 @@ export const config = {
   api: {
     bodyParser: false,
   },
-  runtime: "edge",
 };
 
 export default async function handler(
