@@ -21,6 +21,7 @@ export const config = {
   api: {
     bodyParser: false,
   },
+  runtime: "edge",
 };
 
 export default async function handler(
@@ -44,9 +45,9 @@ export default async function handler(
     const buffer = readFileSync(data.file.filepath);
     const fileData2 = await pdfParse(buffer);
     const textData = `${fileData2.text.substring(0, 4000)}`;
-    const prompt = `${textData}. Can you please return a JSON representation of the provided data? Use this JSON schema as the structure ${JSON.stringify(
-      JSONSchema
-    )}`;
+    const prompt = `${textData}. 
+      Can you please return a JSON representation of the provided data?
+      Use this JSON schema as the structure ${JSON.stringify(JSONSchema)}`;
     const JSONResult = await openai.createCompletion({
       model: "text-davinci-003",
       prompt,
@@ -62,7 +63,7 @@ export default async function handler(
 
     await entity.create(menus, restaurantId);
 
-    return res.status(201).json({ id: "restaurantId" });
+    return res.status(201).json({ id: restaurantId });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json(error.message);
