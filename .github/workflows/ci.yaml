@@ -16,7 +16,7 @@ jobs:
           POSTGRES_DATABASE: DB_CI
           POSTGRES_PASSWORD: password
         ports:
-          - 5432:5432
+          - 5400:5432
 
     env:
       DATABASE_URL: postgres://postgres:password@localhost:5400/DB_CI
